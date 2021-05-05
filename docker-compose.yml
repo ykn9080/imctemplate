@@ -10,9 +10,9 @@ networks:
   kong-net:
     external: true
 services:
-  imclogin:
-    container_name: imcloginc
-    image: yknam/imclogin
+  imctemplate:
+    container_name: imctemplatec
+    image: yknam/imctemplate
     environment:
       - MONGO_URI=mongodb://imcmongo:27017/local
     restart: always
@@ -22,7 +22,7 @@ services:
       # - images:/data/images
       - /.env:/app/.env
     ports:
-      - "9009:9009"
+      - "9010:9010"
     links:
       - imcmongo
   imcmongo:
