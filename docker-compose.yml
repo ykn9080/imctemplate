@@ -1,17 +1,15 @@
 version: "2"
-volumes:
-  mongodbdata:
-    external: true
-  # jsondata:
-  #   external: true
-  # images:
-  #   external: true
-networks:
-  kong-net:
-    external: true
-networks:
-  kong-net:
-    external: true
+# volumes:
+#   mongodbdata:
+#     external: true
+#   # jsondata:
+#   #   external: true
+#   # images:
+#   #   external: true
+# networks:
+#   kong-net:
+#     external: true
+
 services:
   imctemplate:
     container_name: imctemplatec
@@ -26,8 +24,8 @@ services:
       - /.env:/app/.env
     ports:
       - "9010:9010"
-    networks:
-      - kong-net
+    # networks:
+    #   - kong-net
     external_links:
       - imcmongo
 
