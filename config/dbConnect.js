@@ -17,7 +17,10 @@ mongoose.Promise = require("bluebird");
 
 //Set up default mongoose connection
 //var mongoDB='mongodb://yknam:ykn9080@ds135399.mlab.com:35399/imcdb';
-mongoose.connect(currentsetting.datasrc, {
+
+const dbhost = process.env.DATA_MONGO;
+const dbase = process.env.DATABASE || local;
+mongoose.connect(`${dbhost}/${dbase}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

@@ -16,7 +16,7 @@ module.exports = (app) => {
       },
     },
     // ['.routes/*.js']
-    apis: ["./router/index.js", "./router/customer.js"],
+    apis: ["./router/*.js", "./controllers/*.js"],
   };
 
   const swaggerDocs = swaggerJsDoc(swaggerOptions);

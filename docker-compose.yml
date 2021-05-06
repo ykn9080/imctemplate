@@ -9,12 +9,15 @@ volumes:
 networks:
   kong-net:
     external: true
+networks:
+  kong-net:
+    external: true
 services:
   imctemplate:
     container_name: imctemplatec
     image: yknam/imctemplate
     environment:
-      - MONGO_URI=mongodb://imcmongo:27017/local
+      - MONGO_URI=mongodb://imcmongo:27017/test
     restart: always
     build: .
     volumes:
@@ -23,14 +26,17 @@ services:
       - /.env:/app/.env
     ports:
       - "9010:9010"
-    links:
+    networks:
+      - kong-net
+    external_links:
       - imcmongo
-  imcmongo:
-    container_name: imcmongoc
-    image: yknam/imcmongo:first
-    restart: always
-    volumes:
-      #- ../Program\ Files/MongoDB/Server/4.0/data:/data/db
-      - mongodbdata:/data/db
-    ports:
-      - "9007:27017"
+
+  # imcmongo:
+  #   container_name: imcmongoc
+  #   image: yknam/imcmongo:first
+  #   restart: always
+  #   volumes:
+  #     #- ../Program\ Files/MongoDB/Server/4.0/data:/data/db
+  #     - mongodbdata:/data/db
+  #   ports:
+  #     - "9007:27017"
