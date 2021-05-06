@@ -18,7 +18,7 @@ app.engine("html", require("ejs").renderFile);
 app.set("views", __dirname + "/views");
 require("./router/index.js")(app);
 require("./swagger/index.js")(app);
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 9010;
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
