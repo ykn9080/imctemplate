@@ -13,5 +13,7 @@ jobs:
           password: ${{ secrets.DIGITALOCEAN_PASSWORD }}
           port: 22
           script: |
+            docker rm -f imctemplatec
+            docker rmi -f imctemplate
             docker pull yknam/imctemplate
             docker run --rm --network kong-net --name imctemplatec -p 9010:9010 -d yknam/imctemplate
