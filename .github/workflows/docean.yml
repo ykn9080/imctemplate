@@ -1,16 +1,17 @@
 name: remote ssh command
 on: [push]
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DIGITALOCEAN_HOST }}
-        username: root
-        password: ${{ secrets.DIGITALOCEAN_PASSWORD }}
-        port: 22
-        script: whoami
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DIGITALOCEAN_HOST }}
+          username: root
+          password: ${{ secrets.DIGITALOCEAN_PASSWORD }}
+          port: 22
+          script: |
+            docker pull yknam/imctemplate
+            docker run --rm --network kong-net --name imctemplatec -p 9010:9010 -d yknam/imctemplate
