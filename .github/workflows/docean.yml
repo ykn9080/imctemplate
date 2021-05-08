@@ -3,17 +3,36 @@ on: [push]
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
         with:
-          host: ${{ secrets.DIGITALOCEAN_HOST }}
-          username: root
-          password: ${{ secrets.DIGITALOCEAN_PASSWORD }}
-          port: 22
-          script: |
-            docker rm -f imctemplatec
-            docker rmi -f imctemplate
-            docker pull yknam/imctemplate
-            docker run --rm --network kong-net --name imctemplatec -p 9010:9010 -d yknam/imctemplate
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/imctemplate:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+        
+#       - name: executing remote ssh commands using password
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.DIGITALOCEAN_HOST }}
+#           username: root
+#           password: ${{ secrets.DIGITALOCEAN_PASSWORD }}
+#           port: 22
+#           script: |
+#             docker rm -f imctemplatec
+#             docker rmi -f imctemplate
+#             docker pull yknam/imctemplate
+#             docker run --rm --network kong-net --name imctemplatec -p 9010:9010 -d yknam/imctemplate
