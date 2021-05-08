@@ -28,7 +28,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: false
-          tags: yknam/imctemplate:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/imctemplate:latest
+      - name: Run Container
+        run: |
+          docker rm -f imctemplatec
+          docker run -rm --name imctemplatec -p 9010:9010 -d --network kong-net ${{ secrets.DOCKER_HUB_USERNAME }}/imctemplate
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
